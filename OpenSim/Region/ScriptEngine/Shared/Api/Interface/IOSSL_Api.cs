@@ -282,7 +282,6 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         string osGetGridHomeURI();
         string osGetGridGatekeeperURI();
         string osGetGridCustom(string key);
-        string osGetAvatarHomeURI(string uuid);
 
         LSL_String osFormatString(string str, LSL_List strings);
         LSL_List osMatchString(string src, string pattern, int start);
