@@ -74,7 +74,6 @@ using LSL_Vector = OpenSim.Region.ScriptEngine.Shared.LSL_Types.Vector3;
 using System.Reflection;
 using System.Linq;
 using PermissionMask = OpenSim.Framework.PermissionMask;
-using OpenSim.Services.Connectors;
 
 namespace OpenSim.Region.ScriptEngine.Shared.Api
 {
@@ -15041,32 +15040,6 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             // This does nothing for LSO scripts in SL
         }
 
-		public void llGodLikeRezObject(string inventory, LSL_Vector pos)
-		{
-			m_host.AddScriptLPS(1);
-
-            if (m_ScriptEngine.ConfigSource.Configs["LL-Functions"].GetBoolean("AllowGodFunctions", false))
-            {
-                if (World.Permissions.CanRunConsoleCommand(m_host.OwnerID) | World.Permissions.IsGod(m_host.OwnerID))
-                {
-                    String AssetServerURI = m_ScriptEngine.ConfigSource.Configs["AssetService"].GetString("AssetServerURI", String.Empty);
-                    byte[] assetDatas = new AssetServicesConnector(AssetServerURI).GetData(inventory);
-
-                    List<SceneObjectGroup> sceneObjectGroup; List<Vector3> v3; Vector3 bbox; float offset;
-
-                    if (World.GetObjectsToRez(assetDatas, false, out sceneObjectGroup, out v3, out bbox, out offset))
-                    {
-                        sceneObjectGroup.ForEach(delegate(SceneObjectGroup sog)
-                        {
-                            sog.AbsolutePosition = pos;
-                            World.AddSceneObject(sog);
-                        });
-                    }
-                }
-            }
-		}
-
-
         #region Not Implemented
         //
         // Listing the unimplemented lsl functions here, please move
@@ -15087,6 +15060,11 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             NotImplemented("llCollisionSprite");
         }
 
+        public void llGodLikeRezObject(string inventory, LSL_Vector pos)
+        {
+            m_host.AddScriptLPS(1);
+            NotImplemented("llGodLikeRezObject");
+        }
 
         public LSL_String llTransferLindenDollars(string destination, int amount)
         {
@@ -15281,7 +15259,5 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 }
             }
         }
-
     }
 }
-
